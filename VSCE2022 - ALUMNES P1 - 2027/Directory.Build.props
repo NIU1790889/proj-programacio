@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <!-- Define la raíz del repositorio de forma absoluta e independiente de SolutionDir -->
+    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+    <!-- Ruta relativa fija para evitar creación de carpetas _wpftmp durante el Pass 1 de WPF -->
+    <BaseIntermediateOutputPath>..\bin\P3-OSM-WPF-2022\obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>

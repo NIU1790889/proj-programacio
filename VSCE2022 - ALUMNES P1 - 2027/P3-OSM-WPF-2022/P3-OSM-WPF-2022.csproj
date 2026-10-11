@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+	  <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>P3_OSM_2223_WPF</RootNamespace>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x64;x86;ARM64</Platforms>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+    <OutputPath>$(RepoRoot)bin\P3-OSM-WPF-2022\bin\$(Platform)\$(Configuration)\</OutputPath>
+    <CppPlatform Condition="'$(Platform)' == 'x86'">Win32</CppPlatform>
+    <CppPlatform Condition="'$(Platform)' != 'x86'">$(Platform)</CppPlatform>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\P3-OSM-DLL-2022\P3-OSM-DLL-2022.vcxproj">
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+    </ProjectReference>
+
+    <None Include="$(RepoRoot)bin\P3-OSM-DLL-2022\bin\$(CppPlatform)\$(Configuration)\*.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>%(Filename)%(Extension)</Link>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="XAML.MapControl.WPF" Version="10.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Properties\Settings.Designer.cs">
+        <DesignTimeSharedInput>True</DesignTimeSharedInput>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Settings.settings</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Properties\Settings.settings">
+        <Generator>SettingsSingleFileGenerator</Generator>
+        <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      </None>
+    </ItemGroup>
+
+  <Target Name="CopyCppProjectDlls" AfterTargets="Build">
+    <ItemGroup>
+      <_CppDlls Include="$(RepoRoot)bin\P3-OSM-DLL-2022\bin\$(CppPlatform)\$(Configuration)\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_CppDlls)"
+          DestinationFolder="$(OutputPath)"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>
