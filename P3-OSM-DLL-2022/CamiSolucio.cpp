@@ -30,5 +30,6 @@ std::vector<Coordinate> CamiSolucio::getCamiCoords()
 
 	return v;
 
+	//per despres (?)
 	//return m_cami;
 }
