@@ -48,6 +48,12 @@
     <ClInclude Include="PuntDeInteresBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PuntDeInteresBotigaSolucio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PuntDeInteresRestaurantSolucio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -75,6 +81,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MapaSolucio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PuntdeInteresBotigaSolucio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PuntDeInteresRestaurantSolucio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
