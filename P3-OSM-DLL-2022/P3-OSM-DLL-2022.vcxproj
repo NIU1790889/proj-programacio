@@ -256,6 +256,7 @@
     <ClInclude Include="CamiSolucio.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Hash.h" />
     <ClInclude Include="MapaRender.h" />
     <ClInclude Include="MapaBase.h" />
     <ClInclude Include="MapaSolucio.h" />

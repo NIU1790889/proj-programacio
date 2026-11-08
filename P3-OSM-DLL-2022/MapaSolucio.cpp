@@ -14,6 +14,9 @@ void MapaSolucio::getCamins(std::vector<CamiBase*>& camins)
 	CamiSolucio c;
 	camins.clear();
 	camins.push_back(&c);
+
+	//futur
+	//camins = m_camins;
 }
 
 void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
@@ -22,48 +25,69 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 
 	for (it = xmlElements.begin(); it != xmlElements.end(); it++)
 	{
-		if (it->id_element == "way") //guardar camins a camisolucio
+		//agafar id de l'element per utilitzar-ho de clau al hash
+		int id = -1; 
+		int i = 0;
+		while (i < it->atributs.size() && id == -1)
+		{
+			if (it->atributs[i].first == "id")
+				id = int(std::stod(it->atributs[i].second));
+			i++;
+		}
+
+		if (it->id_element == "node") //guardar nodes
+		{
+			//mirar si es punt d'interes o node de via
+			bool puntInteres = false;
+			int i = 0;
+			while (i < it->fills.size() && !puntInteres)
+			{
+				if (it->fills[i].first == "tag")
+					if (Util::kvDeTag(it->fills[i].second).first == "name")
+						puntInteres = true;
+				i++;
+			}
+
+			if (puntInteres)
+			{
+				//guardar punts d'interes
+			}
+			else
+			{
+				//guardar nodes via per facilitar buscar les coords pels camins
+				Coordinate c;
+				c.lat = 0;
+				c.lon = 0;
+				
+				for (int i = 0; i < it->atributs.size(); i++)
+				{
+					if (it->atributs[i].first == "lat")
+						c.lat = std::stod(it->atributs[i].second);
+					else if (it->atributs[i].first == "lon")
+						c.lon = std::stod(it->atributs[i].second);
+				}				
+				
+				m_nodesVia.insert(id, c);
+			}
+		}
+		else if (it->id_element == "way") //per guardar camins a camisolucio
 		{
 			std::vector<Coordinate> v;
 
 			for (int i = 0; i < it->fills.size(); i++) //recorrer fills buscant nodes
 			{
-				if (it->fills[i].first == "tag")
-					if (Util::kvDeTag(it->fills[i].second).first == "name")
-						v.push_back(getNodeCoords(xmlElements, Util::kvDeTag(it->fills[i].second).second));
+				if (it->fills[i].first == "nd")
+					//com que els nodes van abans que els camins la informacio ja estara desada
+					v.push_back(m_nodesVia[stoi(Util::kvDeTag(it->fills[i].second).second)]);
 			}
+
+			//guardar cami a la llista de camisolucio
+			CamiSolucio* cami = new CamiSolucio;
+			cami->getCamiCoords(v);
+			m_camins.insert(id,cami);
 		}
 
-		else if (it->id_element == "node")
-		{
-			//guardar punts d'interes
-		}
+		
 	}
 }
 
-Coordinate MapaSolucio::getNodeCoords(std::vector<XmlElement>& xmlElements, std::string ref)
-{
-	std::vector<XmlElement>::iterator it;
-
-	Coordinate c;
-	c.lat = 0;
-	c.lon = 0;
-
-	for (it = xmlElements.begin(); it != xmlElements.end(); it++)
-	{
-		if (it->id_element == "node" && it->atributs[0].second == ref)
-		{
-			for (int i = 0; i < it->atributs.size(); i++)
-			{
-				if (it->atributs[i].first == "lat")
-					c.lat = std::stod(it->atributs[i].second);
-				else if (it->atributs[i].first == "lon")
-					c.lon = std::stod(it->atributs[i].second);
-			}
-
-			return c;
-		}
-	}
-
-	return c;
-}

@@ -2,6 +2,7 @@
 #include "pch.h"
 
 #include "MapaBase.h"
+#include "Hash.h"
 
 
 
@@ -13,6 +14,7 @@ public:
 	void parsejaXmlElements(std::vector<XmlElement>& xmlElements) override;
 
 private:
-	//per passar de id d'un node a les seves coordenades
-	Coordinate getNodeCoords(std::vector<XmlElement>& xmlElements, std::string ref);
+	Hash<int, CamiBase*> m_camins;
+	Hash<int, PuntDeInteresBase*> m_puntsInteres;
+	Hash<int, Coordinate> m_nodesVia;
 };
