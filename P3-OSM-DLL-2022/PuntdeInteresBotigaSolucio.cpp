@@ -1,3 +1,6 @@
+#pragma once
+#include "pch.h"
+
 #include "PuntDeInteresBotigaSolucio.h"
 
 PuntDeInteresBotigaSolucio::PuntDeInteresBotigaSolucio(XmlElement tags, std::string name)
