@@ -1,6 +1,6 @@
-#include "PuntDeInteresBotigaSolucio"
+#include "PuntDeInteresBotigaSolucio.h"
 
-PuntDeInteresBotigaSolucio(XmlElement tags, std::string name)
+PuntDeInteresBotigaSolucio::PuntDeInteresBotigaSolucio(XmlElement tags, std::string name)
 {
     m_name = name;
     std::vector<PAIR_ATTR_VALUE>::iterator it;
@@ -21,19 +21,20 @@ PuntDeInteresBotigaSolucio(XmlElement tags, std::string name)
     }
 }
 
+
 unsigned int PuntDeInteresBotigaSolucio::getColor()
 {
     switch(m_shop){
-        case "supermarket":
+        case Shop::SUPERMARKET:
             return 0xDFFF00;
-        case "tobacco":
+        case Shop::TOBACCO:
             return 0xFF7F50 ;
-        case "bakery":
+        case Shop::BAKERY:
             if(wheelchair && hours)
                 return 0x4CBB17;
             else
                 return 0xFA8072;
-        case "undefined":
+        case Shop::OTHER:
             return PuntDeInteresBase::getColor();
         default:
             return 0xFFEA00;

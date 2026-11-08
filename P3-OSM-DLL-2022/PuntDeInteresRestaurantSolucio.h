@@ -1,14 +1,21 @@
 #pragma once
 #include "PuntDeInteresBase.h"
+
+enum class Cuisine
+{
+    PIZZA,
+    CHINESE,
+    OTHER
+};
+
 class PuntDeInteresRestaurantSolucio : public PuntDeInteresBase 
 {
     public:
-        PuntDeInteresRestaurantSolucio (): m_name("undefined"){}
+        PuntDeInteresRestaurantSolucio(): PuntDeInteresBase(), m_cuisine(Cuisine::OTHER), m_wheelchair(false) {}
         PuntDeInteresRestaurantSolucio(XmlElement tags, std::string name);
         std::string getName(){return m_name;}
         unsigned int getColor();
-    prvate:
-        std::string m_name;
-        std::string m_cuisine;
-        bool m_wheelchair
+    private:
+        Cuisine m_cuisine;
+        bool m_wheelchair;
 };

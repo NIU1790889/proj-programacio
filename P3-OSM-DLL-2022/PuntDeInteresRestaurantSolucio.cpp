@@ -1,5 +1,5 @@
 #include "PuntDeInteresRestaurantSolucio.h"
-PuntDeInteresRestaurantSolucio(XmlElement tags, std::string name)
+PuntDeInteresRestaurantSolucio::PuntDeInteresRestaurantSolucio(XmlElement tags, std::string name)
 {
     m_name = name;
     std::vector<PAIR_ATTR_VALUE>::iterator it;
@@ -13,12 +13,13 @@ PuntDeInteresRestaurantSolucio(XmlElement tags, std::string name)
     }
 }
 
-unsigned int PuntDeInteresBotigaSolucio::getColor()
+
+unsigned int PuntDeInteresRestaurantSolucio::getColor()
 {
     switch(m_cuisine){
-        case "chinese":
+        case Cuisine::CHINESE:
             return 0x00FFFF;
-        case "pizza":
+        case Cuisine::PIZZA:
             if(m_wheelchair)
                 return 0x7FFFD4;
         default:

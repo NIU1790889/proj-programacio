@@ -6,7 +6,7 @@
 
 class PuntDeInteresBase {
 
-	private:
+	protected:
 		Coordinate m_coord;
 		std::string m_name;
 
