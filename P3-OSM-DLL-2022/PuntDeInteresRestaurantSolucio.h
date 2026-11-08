@@ -5,13 +5,13 @@ enum class Cuisine
 {
     PIZZA,
     CHINESE,
-    OTHER
+    UNDEFINED
 };
 
 class PuntDeInteresRestaurantSolucio : public PuntDeInteresBase 
 {
     public:
-        PuntDeInteresRestaurantSolucio(): PuntDeInteresBase(), m_cuisine(Cuisine::OTHER), m_wheelchair(false) {}
+        PuntDeInteresRestaurantSolucio(): PuntDeInteresBase(), m_cuisine(Cuisine::UNDEFINED), m_wheelchair(false) {}
         PuntDeInteresRestaurantSolucio(XmlElement tags, std::string name);
         std::string getName(){return m_name;}
         unsigned int getColor();

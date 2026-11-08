@@ -3,12 +3,19 @@ PuntDeInteresRestaurantSolucio::PuntDeInteresRestaurantSolucio(XmlElement tags, 
 {
     m_name = name;
     std::vector<PAIR_ATTR_VALUE>::iterator it;
-    m_cuisine = "undefined";
-    for(it = m_tags.atributs.begin(); it != m_tags.atributs.end(); it++)
+    m_cuisine = Cuisine::UNDEFINED;
+    for(it = tags.atributs.begin(); it != tags.atributs.end(); it++)
     {
-        if(it.first == "cuisine")
-            m_cuisine = it.second;
-        else if (it.first == "wheelchair" && it.second == "yes")
+        if (it->first == "cuisine")
+        {
+            if (it->second == "chinese")
+                m_cuisine = Cuisine::CHINESE;
+            else if (it->second == "pizza")
+                m_cuisine = Cuisine::PIZZA;
+            else
+                m_cuisine = Cuisine::UNDEFINED;
+        }
+        else if (it->first == "wheelchair" && it->second == "yes")
             m_wheelchair = true;
     }
 }
