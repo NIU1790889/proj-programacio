@@ -27,25 +27,25 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 	{
 		//agafar id de l'element per utilitzar-ho de clau al hash
 		int id = -1; 
-		int i = 0;
-		while (i < it->atributs.size() && id == -1)
+		int atr = 0;
+		while (atr < it->atributs.size() && id == -1)
 		{
-			if (it->atributs[i].first == "id")
-				id = int(std::stod(it->atributs[i].second));
-			i++;
+			if (it->atributs[atr].first == "id")
+				id = int(std::stod(it->atributs[atr].second));
+			atr++;
 		}
 
 		if (it->id_element == "node") //guardar nodes
 		{
 			//mirar si es punt d'interes o node de via
 			bool puntInteres = false;
-			int i = 0;
-			while (i < it->fills.size() && !puntInteres)
+			int fill = 0;
+			while (fill < it->fills.size() && !puntInteres)
 			{
-				if (it->fills[i].first == "tag")
-					if (Util::kvDeTag(it->fills[i].second).first == "name")
+				if (it->fills[fill].first == "tag")
+					if (Util::kvDeTag(it->fills[fill].second).first == "name")
 						puntInteres = true;
-				i++;
+				fill++;
 			}
 
 			if (puntInteres)

@@ -18,10 +18,11 @@ private:
 	int codi2(int index, int vegades) const;
 	void insertIntern(const Clau& clau, const Valor& valor);
 
-	std::vector<std::pair<Clau,Valor, size> > m_hash;
+	std::vector<std::pair<Clau,Valor>> m_hash;
 	std::vector<int> m_estat;
 	int m_numOcupats;
 	int m_maxElements;
+	Valor m_valorDefecte;
 
 	static const int LLIURE = 0;
 	static const int OCUPAT = 1;
@@ -34,7 +35,7 @@ Hash<Clau,Valor, size>::Hash()
 {
 	m_maxElements = size;
 
-	m_hash.resize(m_maxElements, pair<Clau, Valor>);
+	m_hash.resize(m_maxElements);
 	m_estat.resize(m_maxElements, int(LLIURE));
 
 	m_numOcupats = 0;
@@ -83,7 +84,7 @@ bool Hash<Clau,Valor, size>::find(const Clau& clau, Valor& valor) const
 
 	if (m_hash[index].first == clau)
 	{
-		definicio = m_hash[index].second;
+		valor = m_hash[index].second;
 		return true;
 	}
 	else
@@ -93,7 +94,7 @@ bool Hash<Clau,Valor, size>::find(const Clau& clau, Valor& valor) const
 		{
 			if (m_hash[index2].first == clau)
 			{
-				definicio = m_hash[index2].second;
+				valor = m_hash[index2].second;
 				return true;
 			}
 			if (m_estat[index2] == LLIURE)
@@ -103,7 +104,7 @@ bool Hash<Clau,Valor, size>::find(const Clau& clau, Valor& valor) const
 			i++;
 			index2 = codi2(index, i);
 		}
-		definicio = "";
+		valor = "";
 		return false;
 	}
 }
@@ -117,14 +118,14 @@ int Hash<Clau,Valor, size>::codi(Clau c) const
 template <typename Clau, typename Valor, int size>
 int Hash<Clau,Valor, size>::codi2(int index, int vegades) const
 {
-	return (index + pow(vegades, 2)) % m_maxElements;
+	return (int)(index + pow(vegades, 2)) % m_maxElements;
 }
 
 template <typename Clau, typename Valor, int size>
 void Hash<Clau,Valor, size>::insertIntern(const Clau& clau, const Valor& valor)
 {
 	int index = codi(clau);
-	if (m_hash[index].first == "")
+	if (m_estat[index] != OCUPAT)
 	{//Inserim element a posicio buida
 		m_hash[index].first = clau;
 		m_hash[index].second = valor;
@@ -137,7 +138,7 @@ void Hash<Clau,Valor, size>::insertIntern(const Clau& clau, const Valor& valor)
 		while (i < m_maxElements)
 		{
 			index2 = codi2(index, i);
-			if (m_hash[index2].first == "")
+			if (m_estat[index2] != OCUPAT)
 			{
 				m_hash[index2].first = clau;
 				m_hash[index2].second = valor;
