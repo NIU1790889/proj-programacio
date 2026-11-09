@@ -16,7 +16,7 @@ void MapaSolucio::getCamins(std::vector<CamiBase*>& camins)
 	camins.push_back(&c);
 
 	//futur
-	//camins = m_camins;
+	//camins = m_camins; pero nomes els ocupats
 }
 
 void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
@@ -26,7 +26,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 	for (it = xmlElements.begin(); it != xmlElements.end(); it++)
 	{
 		//agafar id de l'element per utilitzar-ho de clau al hash
-		int id = -1; 
+		int id = 0; //0 sera el valor per defecte
 		int atr = 0;
 		while (atr < it->atributs.size() && id == -1)
 		{
@@ -72,19 +72,34 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 		}
 		else if (it->id_element == "way") //per guardar camins a camisolucio
 		{
-			std::vector<Coordinate> v;
-
-			for (int i = 0; i < it->fills.size(); i++) //recorrer fills buscant nodes
+			//ha de mirar que siguin highway
+			bool highway = false;
+			int fill = 0;
+			while (fill < it->fills.size() && !highway)
 			{
-				if (it->fills[i].first == "nd")
-					//com que els nodes van abans que els camins la informacio ja estara desada
-					v.push_back(m_nodesVia[stoi(Util::kvDeTag(it->fills[i].second).second)]);
+				if (it->fills[fill].first == "tag")
+					if (Util::kvDeTag(it->fills[fill].second).first == "highway")
+						highway = true;
+				fill++;
 			}
 
-			//guardar cami a la llista de camisolucio
-			CamiSolucio* cami = new CamiSolucio;
-			cami->getCamiCoords(v);
-			m_camins.insert(id,cami);
+			//nomes guardem highways
+			if (highway)
+			{
+				std::vector<Coordinate> v;
+
+				for (int i = 0; i < it->fills.size(); i++) //recorrer fills buscant nodes
+				{
+					if (it->fills[i].first == "nd")
+						//com que els nodes van abans que els camins la informacio ja estara desada
+						v.push_back(m_nodesVia[stoi(Util::kvDeTag(it->fills[i].second).second)]);
+				}
+
+				//guardar cami a la llista de camisolucio
+				CamiSolucio* cami = new CamiSolucio;
+				cami->setCamiCoords(v);
+				m_camins.insert(id, cami);
+			}			
 		}
 
 		

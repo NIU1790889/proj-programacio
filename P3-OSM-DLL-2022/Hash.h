@@ -118,7 +118,7 @@ int Hash<Clau,Valor, size>::codi(Clau c) const
 template <typename Clau, typename Valor, int size>
 int Hash<Clau,Valor, size>::codi2(int index, int vegades) const
 {
-	return (int)(index + pow(vegades, 2)) % m_maxElements;
+	return ((int)(index + pow(vegades, 2))) % m_maxElements;
 }
 
 template <typename Clau, typename Valor, int size>
