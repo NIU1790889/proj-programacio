@@ -17,7 +17,7 @@ class PuntDeInteresBotigaSolucio: public PuntDeInteresBase
     public:
         PuntDeInteresBotigaSolucio(): PuntDeInteresBase(), m_shop(Shop::UNDEFINED), m_wheelchair(false), m_hours(false) {}
         PuntDeInteresBotigaSolucio(XmlElement tags, std::string name);
-        std::string getName(){return m_name;}
+        //std::string getName(){return m_name;}
         unsigned int getColor();
     protected:
         Shop m_shop;

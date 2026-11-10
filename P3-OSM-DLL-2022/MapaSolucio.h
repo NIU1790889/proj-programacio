@@ -3,6 +3,9 @@
 
 #include "MapaBase.h"
 #include "Hash.h"
+#include "CamiSolucio.h"
+#include "PuntDeInteresBotigaSolucio.h"
+#include "PuntDeInteresRestaurantSolucio.h"
 
 
 
@@ -14,7 +17,7 @@ public:
 	void parsejaXmlElements(std::vector<XmlElement>& xmlElements) override;
 
 private:
-	Hash<int, CamiBase*> m_camins;
-	Hash<int, PuntDeInteresBase*> m_puntsInteres;
+	std::vector<CamiBase*> m_camins;
+	std::vector<PuntDeInteresBase*> m_puntsInteres;
 	Hash<int, Coordinate> m_nodesVia;
 };

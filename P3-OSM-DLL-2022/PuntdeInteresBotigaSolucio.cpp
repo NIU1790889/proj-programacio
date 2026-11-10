@@ -5,7 +5,7 @@
 
 PuntDeInteresBotigaSolucio::PuntDeInteresBotigaSolucio(XmlElement tags, std::string name)
 {
-    m_name = name;
+    //m_name = name;
     m_wheelchair = false;
     m_hours = false;
     std::vector<PAIR_ATTR_VALUE>::iterator it;

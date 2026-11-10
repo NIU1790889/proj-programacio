@@ -3,6 +3,7 @@
 #include "Util.h"
 #include "MapaSolucio.h"
 
+
 void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
 {
 
@@ -25,16 +26,6 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 
 	for (it = xmlElements.begin(); it != xmlElements.end(); it++)
 	{
-		//agafar id de l'element per utilitzar-ho de clau al hash
-		int id = 0; //0 sera el valor per defecte
-		int atr = 0;
-		while (atr < it->atributs.size() && id == -1)
-		{
-			if (it->atributs[atr].first == "id")
-				id = int(std::stod(it->atributs[atr].second));
-			atr++;
-		}
-
 		if (it->id_element == "node") //guardar nodes
 		{
 			//mirar si es punt d'interes o node de via
@@ -55,6 +46,17 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 			else
 			{
 				//guardar nodes via per facilitar buscar les coords pels camins
+
+				//agafar id de l'element per utilitzar-ho de clau al hash
+				int id = 0; //0 sera el valor per defecte
+				int atr = 0;
+				while (atr < it->atributs.size() && id == -1)
+				{
+					if (it->atributs[atr].first == "id")
+						id = int(std::stod(it->atributs[atr].second));
+					atr++;
+				}
+
 				Coordinate c;
 				c.lat = 0;
 				c.lon = 0;
@@ -98,7 +100,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				//guardar cami a la llista de camisolucio
 				CamiSolucio* cami = new CamiSolucio;
 				cami->setCamiCoords(v);
-				m_camins.insert(id, cami);
+				m_camins.push_back(cami);
 			}			
 		}
 

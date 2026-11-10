@@ -9,7 +9,7 @@
 #include "Common.h"
 
 #include "MapaBase.h"
-#include "MapaSolucio.h"
+//#include "MapaSolucio.h"
 #include "XML4OSMUtil.h"
 
 

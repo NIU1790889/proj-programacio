@@ -4,7 +4,7 @@
 #include "PuntDeInteresRestaurantSolucio.h"
 PuntDeInteresRestaurantSolucio::PuntDeInteresRestaurantSolucio(XmlElement tags, std::string name)
 {
-    m_name = name;
+    //m_name = name;
     std::vector<PAIR_ATTR_VALUE>::iterator it;
     m_cuisine = Cuisine::UNDEFINED;
     for(it = tags.atributs.begin(); it != tags.atributs.end(); it++)
