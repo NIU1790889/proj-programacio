@@ -10,19 +10,21 @@ public:
 	~Hash();
 	Valor& operator[](const Clau& clau);
 	void insert(const Clau& clau, const Valor& valor);
-	bool find(const Clau& clau, Valor& valor) const;
+	bool find(const Clau& clau, Valor& valor);
 	bool esborra(const Clau& clau);
 
 private:
-	int codi(Clau c) const;
-	int codi2(int index, int vegades) const;
+	int codi(Clau c);
+	int codi2(int index, int& vegades);
 	void insertIntern(const Clau& clau, const Valor& valor);
+	void rehash(int increase);
 
 	std::vector<std::pair<Clau,Valor>> m_hash;
 	std::vector<int> m_estat;
 	int m_numOcupats;
 	int m_maxElements;
 	Valor m_valorDefecte;
+	Clau m_clauDefecte;
 
 	static const int LLIURE = 0;
 	static const int OCUPAT = 1;
@@ -78,7 +80,7 @@ void Hash<Clau,Valor, size>::insert(const Clau& clau, const Valor& valor)
 }
 
 template <typename Clau, typename Valor, int size>
-bool Hash<Clau,Valor, size>::find(const Clau& clau, Valor& valor) const
+bool Hash<Clau,Valor, size>::find(const Clau& clau, Valor& valor)
 {
 	int index = codi(clau);
 
@@ -104,13 +106,13 @@ bool Hash<Clau,Valor, size>::find(const Clau& clau, Valor& valor) const
 			i++;
 			index2 = codi2(index, i);
 		}
-		valor = "";
+		valor = m_valorDefecte;
 		return false;
 	}
 }
 
 template <typename Clau, typename Valor, int size>
-int Hash<Clau,Valor, size>::codi(Clau s) const
+int Hash<Clau,Valor, size>::codi(Clau s)
 {
 	unsigned long valor = 0;
 	for (int i = 0; i < s.size(); i++)
@@ -122,10 +124,13 @@ int Hash<Clau,Valor, size>::codi(Clau s) const
 }
 
 template <typename Clau, typename Valor, int size>
-int Hash<Clau,Valor, size>::codi2(int index, int vegades) const
+int Hash<Clau,Valor, size>::codi2(int index, int& vegades) 
 {
-	if (vegades >= m_maxElements)
-		return -1; // no hi ha espai, ampliar
+	if (m_numOcupats >= m_maxElements)
+	{
+		rehash(1000); // no hi ha espai, ampliar
+		vegades = 0;
+	}
 
 	return ((int)(index + vegades)) % m_maxElements;
 }
@@ -200,8 +205,8 @@ bool Hash<Clau,Valor, size>::esborra(const Clau& clau)
 
 	if (m_hash[index].first == clau)
 	{
-		m_hash[index].first = "";
-		m_hash[index].second = "";
+		m_hash[index].first = m_clauDefecte;
+		m_hash[index].second = m_valorDefecte;
 		m_numOcupats--;
 		m_estat[index] = ESBORRAT;
 		return true;
@@ -214,8 +219,8 @@ bool Hash<Clau,Valor, size>::esborra(const Clau& clau)
 			if (m_hash[index2].first == clau)
 			{
 				//Element trobat
-				m_hash[index2].first = "";
-				m_hash[index2].second = "";
+				m_hash[index2].first = m_clauDefecte;
+				m_hash[index2].second = m_valorDefecte;
 				m_numOcupats--;
 				m_estat[index2] = ESBORRAT;
 				return true;
@@ -229,5 +234,26 @@ bool Hash<Clau,Valor, size>::esborra(const Clau& clau)
 		}
 		//Element no trobat
 		return false;
+	}
+}
+
+template <typename Clau, typename Valor, int size>
+void Hash<Clau, Valor, size>::rehash(int increase)
+{
+	m_maxElements += increase;
+
+	std::vector<std::pair<Clau, Valor>> aux1 = m_hash;
+	std::vector<int> aux2 = m_estat;
+
+
+	m_hash.resize(m_maxElements);
+	m_estat.resize(m_maxElements, int(LLIURE));
+
+	for (int i = 0; i < m_maxElements- increase; i++)
+	{
+		if (aux2[i] == OCUPAT)
+		{
+			insert(aux1[i].first, aux1[i].second);
+		}
 	}
 }
