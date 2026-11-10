@@ -5,7 +5,7 @@
 
 std::vector<Coordinate> CamiSolucio::getCamiCoords() 
 {
-	std::vector<Coordinate> v;
+	/*std::vector<Coordinate> v;
 	Coordinate c1;
 	c1.lat = 41.4928803;
 	c1.lon = 2.1452381;
@@ -31,8 +31,7 @@ std::vector<Coordinate> CamiSolucio::getCamiCoords()
 
 	v.push_back(c4);
 
-	return v;
+	return v;*/
 
-	//per despres (?)
-	//return m_cami;
+	return m_cami;
 }

@@ -19,5 +19,5 @@ public:
 private:
 	std::vector<CamiBase*> m_camins;
 	std::vector<PuntDeInteresBase*> m_puntsInteres;
-	Hash<int, Coordinate> m_nodesVia;
+	Hash<std::string, Coordinate> m_nodesVia;
 };

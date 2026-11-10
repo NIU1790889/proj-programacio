@@ -2,7 +2,7 @@
 #include "pch.h"
 #include <vector>
 
-template <typename Clau, typename Valor, int size = 100>
+template <typename Clau, typename Valor, int size = 1000>
 class Hash
 {
 public:
@@ -110,15 +110,24 @@ bool Hash<Clau,Valor, size>::find(const Clau& clau, Valor& valor) const
 }
 
 template <typename Clau, typename Valor, int size>
-int Hash<Clau,Valor, size>::codi(Clau c) const
+int Hash<Clau,Valor, size>::codi(Clau s) const
 {
-	return c % m_maxElements;
+	unsigned long valor = 0;
+	for (int i = 0; i < s.size(); i++)
+	{
+		valor += (s[i] * pow(2, i));
+		valor = valor % m_maxElements;
+	}
+	return valor;
 }
 
 template <typename Clau, typename Valor, int size>
 int Hash<Clau,Valor, size>::codi2(int index, int vegades) const
 {
-	return ((int)(index + pow(vegades, 2))) % m_maxElements;
+	if (vegades >= m_maxElements)
+		return -1; // no hi ha espai, ampliar
+
+	return ((int)(index + vegades)) % m_maxElements;
 }
 
 template <typename Clau, typename Valor, int size>

@@ -6,18 +6,16 @@
 
 void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
 {
-
+	//pdis = m_puntsInteres
 }
 
 void MapaSolucio::getCamins(std::vector<CamiBase*>& camins)
 {
-	//segurament s'haura de canviar mes endavant pq nomes funciona pq getCamiCoords te valors fixos
-	CamiSolucio c;
+	/*CamiSolucio* c = new CamiSolucio();
 	camins.clear();
-	camins.push_back(&c);
+	camins.push_back(c);*/
 
-	//futur
-	//camins = m_camins; pero nomes els ocupats
+	camins = m_camins;
 }
 
 void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
@@ -48,12 +46,12 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				//guardar nodes via per facilitar buscar les coords pels camins
 
 				//agafar id de l'element per utilitzar-ho de clau al hash
-				int id = 0; //0 sera el valor per defecte
+				std::string id = "0"; //0 sera el valor per defecte
 				int atr = 0;
-				while (atr < it->atributs.size() && id == -1)
+				while (atr < it->atributs.size() && id == "0") //no agafa l'id
 				{
 					if (it->atributs[atr].first == "id")
-						id = int(std::stod(it->atributs[atr].second));
+						id = it->atributs[atr].second;
 					atr++;
 				}
 
@@ -93,8 +91,12 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				for (int i = 0; i < it->fills.size(); i++) //recorrer fills buscant nodes
 				{
 					if (it->fills[i].first == "nd")
+					{
 						//com que els nodes van abans que els camins la informacio ja estara desada
-						v.push_back(m_nodesVia[stoi(Util::kvDeTag(it->fills[i].second).second)]);
+						v.push_back(m_nodesVia[it->fills[i].second[0].second]);
+					}
+
+						
 				}
 
 				//guardar cami a la llista de camisolucio
@@ -103,8 +105,6 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				m_camins.push_back(cami);
 			}			
 		}
-
-		
 	}
 }
 
