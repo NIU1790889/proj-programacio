@@ -1,21 +1,13 @@
 #pragma once
 #include "PuntDeInteresBase.h"
-
-enum class Cuisine
-{
-    PIZZA,
-    CHINESE,
-    UNDEFINED
-};
+#include "MapaSolucio.h"
 
 class PuntDeInteresRestaurantSolucio : public PuntDeInteresBase 
 {
     public:
-        PuntDeInteresRestaurantSolucio(): PuntDeInteresBase(), m_cuisine(Cuisine::UNDEFINED), m_wheelchair(false) {}
-        PuntDeInteresRestaurantSolucio(XmlElement tags, std::string name);
-        //std::string getName(){return m_name;}
-        unsigned int getColor();
+        PuntDeInteresRestaurantSolucio(): PuntDeInteresBase(), m_color(0xFFA500) {}
+        PuntDeInteresRestaurantSolucio(unsigned int color, std::string name, Coordinate coord): PuntDeInteresBase(coord, name), m_color(color) {}
+        unsigned int getColor() {return m_color;}
     private:
-        Cuisine m_cuisine;
-        bool m_wheelchair;
+        unsigned int m_color;
 };
