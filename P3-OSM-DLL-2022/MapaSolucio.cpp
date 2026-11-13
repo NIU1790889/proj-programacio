@@ -6,9 +6,9 @@
 void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
 {
 	std::vector<PuntDeInteresBase*> vpdi;
-	vpdi.push_back(new PuntDeInteresBotigaSolucio(0x5D3FD3, “El Millor Restaurant”, {41.4902204, 2.1406477}));
-	vpdi.push_back(new PuntDeInteresRestaurantSolucio(0xFA8072, La Millor Pastisseria”, {41.4918606, 2.1465411}));
-	pdis = vpdis;
+	vpdi.push_back(new PuntDeInteresBotigaSolucio(0x5D3FD3, "El Millor Restaurant", {41.4902204, 2.1406477}));
+	vpdi.push_back(new PuntDeInteresRestaurantSolucio(0xFA8072, "La Millor Pastisseria", {41.4918606, 2.1465411}));
+	pdis = vpdi;
 	//pdis = m_puntsInteres
 }
 
@@ -42,30 +42,41 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 
 			if (puntInteres)
 			{
-				std::vector<PAIR_ATTR_VALUE>::iterator it2; //iterator for fills
+				std::vector<std::pair<std::string, std::vector<std::pair<std::string, std::string>>>>::iterator it2; //iterator for fills
 				//parameters for the pdis
 				std::string name;
-				Coordinate coord = {it->atributs[7].second, it->atributs[8].second}
+				Coordinate coord;
+				coord.lat = 0;
+				coord.lon = 0;
+
+				for (int i = 0; i < it->atributs.size(); i++)
+				{
+					if (it->atributs[i].first == "lat")
+						coord.lat = std::stod(it->atributs[i].second);
+					else if (it->atributs[i].first == "lon")
+						coord.lon = std::stod(it->atributs[i].second);
+				}
 				unsigned int color;
 				//bunch of checks
 				bool wheelchair = false; //wheelchair accesible
     			bool hours = false; //open between 6 and 22
-				bool shop = false; // flase is restaurant, true is shop
+				bool shop = false;
+				bool restaurant = false;
 				bool bakery = false;
 				bool pizza = false;
 				
-				for(it2 = it.fills.begin(); it2 != it.fills.end(); it2++) //we go through it2 and manually check if its the attribute we want
+				for(it2 = it->fills.begin(); it2 != it->fills.end(); it2++) //we go through it2 and manually check if its the attribute we want
 				{
-					if(it2->first.second == "name") //name
-						name = it2->second.second;
-					else if(it2->first.second == "shop") //colors of shops
+					if ((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "name")) //name
+						name = Util::kvDeTag(it2->second).second;
+					else if((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "shop")) //colors of shops
 					{
 						shop = true;
-						if (it2->second.second == "supermarket")
+						if (Util::kvDeTag(it2->second).second == "supermarket")
 							color = 0xDFFF00;
-						else if (it2->second.second == "tobacco")
+						else if (Util::kvDeTag(it2->second).second == "tobacco")
 							color = 0xFF7F50;
-						else if (it2->second.second == "bakery")
+						else if (Util::kvDeTag(it2->second).second == "bakery")
 						{
 							bakery = true;
 							color = 0xFA8072;
@@ -73,30 +84,31 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 						else
 							color = 0xFFEA00;            
 					}
-					else if(it2->first.second == "cuisine") //colors of restaurants
+					else if((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "cuisine")) //colors of restaurants
 					{
-						if (it2->second.second == "pizza")
+						restaurant = true;
+						if (Util::kvDeTag(it2->second).second == "pizza")
 							pizza = true;
-						if(it2->second.second == "chinese")
+						if (Util::kvDeTag(it2->second).second == "chinese")
 							color = 0x00FFFF;
 						else
-							color = 0xFFEA00 
+							color = 0xFFEA00;
 					}
-					else if (it2->first.second == "wheelchair" && it2->second.second == "yes") //checks
+					else if (Util::kvDeTag(it2->second).first == "wheelchair" && Util::kvDeTag(it2->second).second == "yes") //checks
 						wheelchair = true;
-					else if (it2->first.second == "opening_hours" && it2->second.second.find("06:00 - 22:00") != std::string::npos) // apparently find returns the position or npos if it isnt there, so we just check if it doesnt return npos
+					else if (Util::kvDeTag(it2->second).first == "opening_hours" && Util::kvDeTag(it2->second).second.find("06:00 - 22:00") != std::string::npos) // apparently find returns the position or npos if it isnt there, so we just check if it doesnt return npos
 						hours = true;
 				}
 
 				if(bakery && wheelchair && hours) //special bakery
 					color = 0x4CBB17;
-				if(!shop && wheelchair)
+				if(restaurant && wheelchair)
 					color = 0x5D3FD3;
 				if(pizza && wheelchair)
 					color = 0x7FFFD4;
 				if(shop)
 					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(color, name, coord)); //add shop
-				else
+				else if (restaurant)
 					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(color, name, coord)); //add restaurant
 			}
 			else

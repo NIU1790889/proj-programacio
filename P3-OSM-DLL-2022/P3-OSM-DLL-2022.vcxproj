@@ -283,8 +283,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PuntDeInteresBase.cpp" />
-    <ClCompile Include="PuntdeInteresBotigaSolucio.cpp" />
-    <ClCompile Include="PuntDeInteresRestaurantSolucio.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="XML4OSMUtil.cpp" />
   </ItemGroup>

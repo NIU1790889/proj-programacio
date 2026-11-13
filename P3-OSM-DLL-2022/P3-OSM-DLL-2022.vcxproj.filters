@@ -83,12 +83,6 @@
     <ClCompile Include="CamiSolucio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PuntdeInteresBotigaSolucio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PuntDeInteresRestaurantSolucio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MapaSolucio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
