@@ -6,8 +6,8 @@
 void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
 {
 	std::vector<PuntDeInteresBase*> vpdi;
-	vpdi.push_back(new PuntDeInteresBotigaSolucio(0x5D3FD3, "El Millor Restaurant", {41.4902204, 2.1406477}));
-	vpdi.push_back(new PuntDeInteresRestaurantSolucio(0xFA8072, "La Millor Pastisseria", {41.4918606, 2.1465411}));
+	vpdi.push_back(new PuntDeInteresBotigaSolucio( "regional", true, "El Millor Restaurant", {41.4902204, 2.1406477}));
+	vpdi.push_back(new PuntDeInteresRestaurantSolucio("bakery", "", false, "La Millor Pastisseria", {41.4918606, 2.1465411}));
 	pdis = vpdi;
 	//pdis = m_puntsInteres
 }
