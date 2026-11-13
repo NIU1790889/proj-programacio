@@ -123,7 +123,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				else if (restaurant)
 					m_puntsInteres.push_back(new PuntDeInteresRestaurantSolucio(category, wheelchair, name, coord)); //add restaurant
 				else 
-					m_puntsInteres.push_back(new PuntDeInteresBase(name, coord)); //add base
+					m_puntsInteres.push_back(new PuntDeInteresBase(coord, name)); //add base
 			}
 			
 		}
