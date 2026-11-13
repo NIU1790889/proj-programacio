@@ -26,7 +26,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 {
 	m_puntsInteres.clear();
 	m_camins.clear();
-	m_nodesVia = Hash<std::string, Coordinate>();
+	m_nodesVia = std::unordered_map<std::string, Coordinate>();
 	std::vector<XmlElement>::iterator it;
 
 	for (it = xmlElements.begin(); it != xmlElements.end(); it++)
@@ -112,7 +112,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 						shop = true;
 						category = Util::kvDeTag(it2->second).second;         
 					}
-					else if ((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "amenity"))
+					else if ((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "amenity") && (Util::kvDeTag(it2->second).second == "restaurant"))
 						restaurant = true;
 					else if((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "cuisine")) //colors of restaurants
 						category = Util::kvDeTag(it2->second).second;
