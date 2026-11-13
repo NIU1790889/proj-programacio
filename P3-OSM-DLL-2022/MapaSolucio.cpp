@@ -109,11 +109,10 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 						shop = true;
 						category = Util::kvDeTag(it2->second).second;         
 					}
-					else if((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "cuisine")) //colors of restaurants
-					{
+					else if ((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "amenity"))
 						restaurant = true;
+					else if((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "cuisine")) //colors of restaurants
 						category = Util::kvDeTag(it2->second).second;
-					}
 					else if (Util::kvDeTag(it2->second).first == "wheelchair" && Util::kvDeTag(it2->second).second == "yes") //checks
 						wheelchair = true;
 					else if (Util::kvDeTag(it2->second).first == "opening_hours") 
@@ -123,6 +122,8 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(category, hours, wheelchair, name, coord)); //add shop
 				else if (restaurant)
 					m_puntsInteres.push_back(new PuntDeInteresRestaurantSolucio(category, wheelchair, name, coord)); //add restaurant
+				else 
+					m_puntsInteres.push_back(new PuntDeInteresBase(name, coord)); //add base
 			}
 			
 		}
