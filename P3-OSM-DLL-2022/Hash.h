@@ -240,16 +240,25 @@ bool Hash<Clau,Valor, size>::esborra(const Clau& clau)
 template <typename Clau, typename Valor, int size>
 void Hash<Clau, Valor, size>::rehash(int increase)
 {
+	int numOcupats = m_maxElements;
+
+	std::vector<std::pair<Clau, Valor>> aux1(m_maxElements);
+	std::vector<int> aux2(m_maxElements);
+
+	aux1 = m_hash;
+	aux2 = m_estat;
+
 	m_maxElements += increase;
 
-	std::vector<std::pair<Clau, Valor>> aux1 = m_hash;
-	std::vector<int> aux2 = m_estat;
-
+	m_hash.clear();
+	m_estat.clear();
 
 	m_hash.resize(m_maxElements);
 	m_estat.resize(m_maxElements, int(LLIURE));
 
-	for (int i = 0; i < m_maxElements- increase; i++)
+	m_numOcupats = 0; //insert ja anira sumant
+
+	for (int i = 0; i < numOcupats; i++)
 	{
 		if (aux2[i] == OCUPAT)
 		{

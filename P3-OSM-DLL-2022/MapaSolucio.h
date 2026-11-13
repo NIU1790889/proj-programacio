@@ -6,7 +6,7 @@
 #include "CamiSolucio.h"
 #include "PuntDeInteresBotigaSolucio.h"
 #include "PuntDeInteresRestaurantSolucio.h"
-#include <unordered_map> //per provar
+#include <unordered_map> //delete?
 
 
 
@@ -20,5 +20,5 @@ public:
 private:
 	std::vector<CamiBase*> m_camins;
 	std::vector<PuntDeInteresBase*> m_puntsInteres;
-	Hash<std::string, Coordinate> m_nodesVia;
+	std::unordered_map<std::string, Coordinate> m_nodesVia;
 };

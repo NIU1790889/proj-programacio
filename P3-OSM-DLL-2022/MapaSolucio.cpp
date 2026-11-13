@@ -5,11 +5,12 @@
 
 void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
 {
-	std::vector<PuntDeInteresBase*> vpdi;
+	/*std::vector<PuntDeInteresBase*> vpdi;
 	vpdi.push_back(new PuntDeInteresRestaurantSolucio( "regional", true, "El Millor Restaurant", {41.4902204, 2.1406477}));
 	vpdi.push_back(new PuntDeInteresBotigaSolucio("bakery", "", false, "La Millor Pastisseria", {41.4918606, 2.1465411}));
-	pdis = vpdi;
-	//pdis = m_puntsInteres
+	pdis = vpdi;*/
+	
+	pdis = m_puntsInteres;
 }
 
 void MapaSolucio::getCamins(std::vector<CamiBase*>& camins)
@@ -115,9 +116,9 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 						c.lat = std::stod(it->atributs[i].second);
 					else if (it->atributs[i].first == "lon")
 						c.lon = std::stod(it->atributs[i].second);
-				}				
+				}
 				
-				m_nodesVia.insert(id, c);
+				m_nodesVia.insert({ id, c });
 			}
 		}
 		else if (it->id_element == "way") //per guardar camins a camisolucio
