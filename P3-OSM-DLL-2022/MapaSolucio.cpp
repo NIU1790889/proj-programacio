@@ -154,8 +154,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				}
 
 				//guardar cami a la llista de camisolucio
-				CamiSolucio* cami = new CamiSolucio;
-				cami->setCamiCoords(v);
+				CamiSolucio* cami = new CamiSolucio(v);
 				m_camins.push_back(cami);
 			}			
 		}
