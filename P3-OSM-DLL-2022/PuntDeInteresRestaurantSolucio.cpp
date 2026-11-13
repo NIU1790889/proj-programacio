@@ -11,5 +11,5 @@ unsigned int PuntDeInteresRestaurantSolucio::getColor()
             return 0x7FFFD4;
 		return 0x5D3FD3;
     }	
-	return 0xFFEA00;
+	return PuntDeInteresBase::getColor();
 }
