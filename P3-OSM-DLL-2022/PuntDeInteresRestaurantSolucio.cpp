@@ -1,4 +1,5 @@
 #include "PuntDeInteresRestaurantSolucio.h"
+#include "pch.h"
 
 unsigned int PuntDeInteresRestaurantSolucio::getColor()
 {

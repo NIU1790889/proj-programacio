@@ -1,4 +1,6 @@
 #include "PuntDeInteresBotigaSolucio.h"
+#include "pch.h"
+
 unsigned int PuntDeInteresBotigaSolucio::getColor()
 {
     if (m_shop == "supermarket")
