@@ -5,12 +5,11 @@
 
 void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
 {
-	/*std::vector<PuntDeInteresBase*> vpdi;
-	vpdi.push_back(new PuntDeInteresBotigaSolucio(0x5D3FD3, "El Millor Restaurant", {41.4902204, 2.1406477}));
-	vpdi.push_back(new PuntDeInteresRestaurantSolucio(0xFA8072, "La Millor Pastisseria", {41.4918606, 2.1465411}));
-	pdis = vpdi;*/
-
-	pdis = m_puntsInteres;
+	std::vector<PuntDeInteresBase*> vpdi;
+	vpdi.push_back(new PuntDeInteresBotigaSolucio( "regional", true, "El Millor Restaurant", {41.4902204, 2.1406477}));
+	vpdi.push_back(new PuntDeInteresRestaurantSolucio("bakery", "", false, "La Millor Pastisseria", {41.4918606, 2.1465411}));
+	pdis = vpdi;
+	//pdis = m_puntsInteres
 }
 
 void MapaSolucio::getCamins(std::vector<CamiBase*>& camins)
@@ -49,7 +48,9 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				Coordinate coord;
 				coord.lat = 0;
 				coord.lon = 0;
-
+				bool wheelchair = false; //wheelchair accesible
+    			std::string hours = "";
+				std::string category = "";
 				for (int i = 0; i < it->atributs.size(); i++)
 				{
 					if (it->atributs[i].first == "lat")
@@ -57,15 +58,11 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 					else if (it->atributs[i].first == "lon")
 						coord.lon = std::stod(it->atributs[i].second);
 				}
-
-				unsigned int color;
 				//bunch of checks
-				bool wheelchair = false; //wheelchair accesible
-    			bool hours = false; //open between 6 and 22
+
+
 				bool shop = false;
 				bool restaurant = false;
-				bool bakery = false;
-				bool pizza = false;
 				
 				for(it2 = it->fills.begin(); it2 != it->fills.end(); it2++) //we go through it2 and manually check if its the attribute we want
 				{
@@ -77,44 +74,22 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 					else if((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "shop")) //colors of shops
 					{
 						shop = true;
-						if (Util::kvDeTag(it2->second).second == "supermarket")
-							color = 0xDFFF00;
-						else if (Util::kvDeTag(it2->second).second == "tobacco")
-							color = 0xFF7F50;
-						else if (Util::kvDeTag(it2->second).second == "bakery")
-						{
-							bakery = true;
-							color = 0xFA8072;
-						}
-						else
-							color = 0xFFEA00;            
+						category = Util::kvDeTag(it2->second).second;         
 					}
 					else if((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "cuisine")) //colors of restaurants
 					{
 						restaurant = true;
-						if (Util::kvDeTag(it2->second).second == "pizza")
-							pizza = true;
-						if (Util::kvDeTag(it2->second).second == "chinese")
-							color = 0x00FFFF;
-						else
-							color = 0xFFEA00;
+						category = Util::kvDeTag(it2->second).second;
 					}
 					else if (Util::kvDeTag(it2->second).first == "wheelchair" && Util::kvDeTag(it2->second).second == "yes") //checks
 						wheelchair = true;
-					else if (Util::kvDeTag(it2->second).first == "opening_hours" && Util::kvDeTag(it2->second).second.find("06:00 - 22:00") != std::string::npos) // apparently find returns the position or npos if it isnt there, so we just check if it doesnt return npos
-						hours = true;
+					else if (Util::kvDeTag(it2->second).first == "opening_hours") 
+						hours = Util::kvDeTag(it2->second).second;
 				}
-
-				if(bakery && wheelchair && hours) //special bakery
-					color = 0x4CBB17;
-				if(restaurant && wheelchair)
-					color = 0x5D3FD3;
-				if(pizza && wheelchair)
-					color = 0x7FFFD4;
 				if(shop)
-					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(color, name, coord)); //add shop
+					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(category, hous, wheelchair, name, coord)); //add shop
 				else if (restaurant)
-					m_puntsInteres.push_back(new PuntDeInteresRestaurantSolucio(color, name, coord)); //add restaurant
+					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(category, wheelchair, name, coord)); //add restaurant
 			}
 			else
 			{
