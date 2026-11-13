@@ -118,8 +118,8 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 						amenity = true;
 						if(Util::kvDeTag(it2->second).second == "restaurant")
 							restaurant = true;
+					}
 					else if ((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "cuisine"))
-					{
 						category = Util::kvDeTag(it2->second).second;
 					else if (Util::kvDeTag(it2->second).first == "wheelchair" && Util::kvDeTag(it2->second).second == "yes") //checks
 						wheelchair = true;
