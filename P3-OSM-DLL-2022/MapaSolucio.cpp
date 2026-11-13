@@ -9,7 +9,7 @@ void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
 	vpdi.push_back(new PuntDeInteresRestaurantSolucio( "regional", true, "El Millor Restaurant", {41.4902204, 2.1406477}));
 	vpdi.push_back(new PuntDeInteresBotigaSolucio("bakery", "", false, "La Millor Pastisseria", {41.4918606, 2.1465411}));
 	pdis = vpdi;*/
-	
+
 	pdis = m_puntsInteres;
 }
 
@@ -44,7 +44,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 					if (key == "name")
 						name = true;
 					if (key == "highway" || key == "public_transport" || key == "access" || key == "entrance")
-						via = true;					
+						via = true;
 				}
 			}
 
@@ -86,7 +86,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				coord.lat = 0;
 				coord.lon = 0;
 				bool wheelchair = false; //wheelchair accesible
-    			std::string hours = "";
+				std::string hours = "";
 				std::string category = "";
 				for (int i = 0; i < it->atributs.size(); i++)
 				{
@@ -101,35 +101,36 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				bool shop = false;
 				bool restaurant = false;
 				bool amenity = false;
-				
-				for(it2 = it->fills.begin(); it2 != it->fills.end(); it2++) //we go through it2 and manually check if its the attribute we want
+
+				for (it2 = it->fills.begin(); it2 != it->fills.end(); it2++) //we go through it2 and manually check if its the attribute we want
 				{
 					if ((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "name")) //name
 					{
 						name = Util::kvDeTag(it2->second).second;
 					}
-					else if((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "shop")) //colors of shops
+					else if ((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "shop")) //colors of shops
 					{
 						shop = true;
-						category = Util::kvDeTag(it2->second).second;         
+						category = Util::kvDeTag(it2->second).second;
 					}
 					else if ((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "amenity"))
+					{
 						restaurant = true;
 						category = Util::kvDeTag(it2->second).second;
 					}
 					else if (Util::kvDeTag(it2->second).first == "wheelchair" && Util::kvDeTag(it2->second).second == "yes") //checks
 						wheelchair = true;
-					else if (Util::kvDeTag(it2->second).first == "opening_hours") 
+					else if (Util::kvDeTag(it2->second).first == "opening_hours")
 						hours = Util::kvDeTag(it2->second).second;
 				}
-				if(shop)
+				if (shop)
 					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(category, hours, wheelchair, name, coord)); //add shop
 				else if (restaurant)
 					m_puntsInteres.push_back(new PuntDeInteresRestaurantSolucio(category, wheelchair, name, coord)); //add restaurant
 				else if (amenity)
 					m_puntsInteres.push_back(new PuntDeInteresBase(coord, name)); //add base
 			}
-			
+
 		}
 		else if (it->id_element == "way") //per guardar camins a camisolucio
 		{
@@ -155,13 +156,13 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 					{
 						//com que els nodes van abans que els camins la informacio ja estara desada
 						v.push_back(m_nodesVia[it->fills[i].second[0].second]);
-					}						
+					}
 				}
 
 				//guardar cami a la llista de camisolucio
 				CamiSolucio* cami = new CamiSolucio(v);
 				m_camins.push_back(cami);
-			}			
+			}
 		}
 	}
 }
