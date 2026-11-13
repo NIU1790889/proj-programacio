@@ -5,11 +5,12 @@
 
 void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
 {
-	std::vector<PuntDeInteresBase*> vpdi;
+	/*std::vector<PuntDeInteresBase*> vpdi;
 	vpdi.push_back(new PuntDeInteresBotigaSolucio(0x5D3FD3, "El Millor Restaurant", {41.4902204, 2.1406477}));
 	vpdi.push_back(new PuntDeInteresRestaurantSolucio(0xFA8072, "La Millor Pastisseria", {41.4918606, 2.1465411}));
-	pdis = vpdi;
-	//pdis = m_puntsInteres
+	pdis = vpdi;*/
+
+	pdis = m_puntsInteres;
 }
 
 void MapaSolucio::getCamins(std::vector<CamiBase*>& camins)
@@ -56,6 +57,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 					else if (it->atributs[i].first == "lon")
 						coord.lon = std::stod(it->atributs[i].second);
 				}
+
 				unsigned int color;
 				//bunch of checks
 				bool wheelchair = false; //wheelchair accesible
@@ -68,7 +70,10 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				for(it2 = it->fills.begin(); it2 != it->fills.end(); it2++) //we go through it2 and manually check if its the attribute we want
 				{
 					if ((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "name")) //name
+					{
 						name = Util::kvDeTag(it2->second).second;
+						int aaa = 3; //delete this
+					}
 					else if((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "shop")) //colors of shops
 					{
 						shop = true;
@@ -109,7 +114,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				if(shop)
 					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(color, name, coord)); //add shop
 				else if (restaurant)
-					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(color, name, coord)); //add restaurant
+					m_puntsInteres.push_back(new PuntDeInteresRestaurantSolucio(color, name, coord)); //add restaurant
 			}
 			else
 			{
