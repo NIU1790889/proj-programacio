@@ -103,7 +103,6 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 					if ((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "name")) //name
 					{
 						name = Util::kvDeTag(it2->second).second;
-						int aaa = 3; //delete this
 					}
 					else if((it2->first == "tag") && (Util::kvDeTag(it2->second).first == "shop")) //colors of shops
 					{

@@ -2,11 +2,10 @@
 #include "pch.h"
 
 #include "MapaBase.h"
-#include "Hash.h"
 #include "CamiSolucio.h"
 #include "PuntDeInteresBotigaSolucio.h"
 #include "PuntDeInteresRestaurantSolucio.h"
-#include <unordered_map> //delete?
+#include <unordered_map> 
 
 
 
