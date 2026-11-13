@@ -24,6 +24,9 @@ void MapaSolucio::getCamins(std::vector<CamiBase*>& camins)
 
 void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 {
+	m_puntsInteres.clear();
+	m_camins.clear();
+	m_nodesVia = Hash<std::string, Coordinate>();
 	std::vector<XmlElement>::iterator it;
 
 	for (it = xmlElements.begin(); it != xmlElements.end(); it++)
