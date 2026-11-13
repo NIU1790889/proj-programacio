@@ -9,7 +9,7 @@ unsigned int PuntDeInteresBotigaSolucio::getColor()
 		return 0xFF7F50;
 	if (m_shop == "bakery")
 	{
-	    if(m_wheelchair && m_opening_hours.find("06:00 - 22:00") != std::string::npos) //special bakery
+	    if(m_wheelchair && m_opening_hours.find("06:00") != std::string::npos && _opening_hours.find("22:00") != std::string::npos) //special bakery
 			return 0x4CBB17;
 		return 0xFA8072;
 	}
