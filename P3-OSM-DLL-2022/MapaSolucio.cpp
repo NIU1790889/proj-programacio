@@ -31,17 +31,50 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 		if (it->id_element == "node") //guardar nodes
 		{
 			//mirar si es punt d'interes o node de via
-			bool puntInteres = false;
-			int fill = 0;
-			while (fill < it->fills.size() && !puntInteres)
+			bool name = false, via = false;
+			for (int fill = 0; fill < it->fills.size(); fill++)
 			{
 				if (it->fills[fill].first == "tag")
-					if (Util::kvDeTag(it->fills[fill].second).first == "name")
-						puntInteres = true;
-				fill++;
+				{
+					std::string key = Util::kvDeTag(it->fills[fill].second).first;
+
+					if (key == "name")
+						name = true;
+					if (key == "highway" || key == "public_transport" || key == "access" || key == "entrance")
+						via = true;					
+				}
 			}
 
-			if (puntInteres)
+			if (!name || it->fills.size() == 0 || via)
+			{
+				//guardar nodes via per facilitar buscar les coords pels camins
+
+				//agafar id de l'element per utilitzar-ho de clau al hash
+				std::string id = "0"; //0 sera el valor per defecte
+				int atr = 0;
+				while (atr < it->atributs.size() && id == "0") //no agafa l'id
+				{
+					if (it->atributs[atr].first == "id")
+						id = it->atributs[atr].second;
+					atr++;
+				}
+
+				Coordinate c;
+				c.lat = 0;
+				c.lon = 0;
+
+				for (int i = 0; i < it->atributs.size(); i++)
+				{
+					if (it->atributs[i].first == "lat")
+						c.lat = std::stod(it->atributs[i].second);
+					else if (it->atributs[i].first == "lon")
+						c.lon = std::stod(it->atributs[i].second);
+				}
+
+				m_nodesVia.insert({ id, c });
+			}
+
+			else
 			{
 				std::vector<std::pair<std::string, std::vector<std::pair<std::string, std::string>>>>::iterator it2; //iterator for fills
 				//parameters for the pdis
@@ -92,34 +125,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 				else if (restaurant)
 					m_puntsInteres.push_back(new PuntDeInteresRestaurantSolucio(category, wheelchair, name, coord)); //add restaurant
 			}
-			else
-			{
-				//guardar nodes via per facilitar buscar les coords pels camins
-
-				//agafar id de l'element per utilitzar-ho de clau al hash
-				std::string id = "0"; //0 sera el valor per defecte
-				int atr = 0;
-				while (atr < it->atributs.size() && id == "0") //no agafa l'id
-				{
-					if (it->atributs[atr].first == "id")
-						id = it->atributs[atr].second;
-					atr++;
-				}
-
-				Coordinate c;
-				c.lat = 0;
-				c.lon = 0;
-				
-				for (int i = 0; i < it->atributs.size(); i++)
-				{
-					if (it->atributs[i].first == "lat")
-						c.lat = std::stod(it->atributs[i].second);
-					else if (it->atributs[i].first == "lon")
-						c.lon = std::stod(it->atributs[i].second);
-				}
-				
-				m_nodesVia.insert({ id, c });
-			}
+			
 		}
 		else if (it->id_element == "way") //per guardar camins a camisolucio
 		{
@@ -145,9 +151,7 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 					{
 						//com que els nodes van abans que els camins la informacio ja estara desada
 						v.push_back(m_nodesVia[it->fills[i].second[0].second]);
-					}
-
-						
+					}						
 				}
 
 				//guardar cami a la llista de camisolucio
