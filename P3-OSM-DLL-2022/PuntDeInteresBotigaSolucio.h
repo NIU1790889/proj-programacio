@@ -5,7 +5,7 @@
 class PuntDeInteresBotigaSolucio: public PuntDeInteresBase 
 {
     public:
-        PuntDeInteresBotigaSolucio(): PuntDeInteresBase() {}
+        PuntDeInteresBotigaSolucio(): PuntDeInteresBase(), m_shop(""), m_opening_hours(""), m_wheelchair(false){}
         PuntDeInteresBotigaSolucio(std::string shop, std::string opening_hours, bool wheelchair, std::string name, Coordinate coord): PuntDeInteresBase(coord, name), m_shop(shop), m_opening_hours(opening_hours), m_wheelchair(wheelchair) {}
         unsigned int getColor();
     private:

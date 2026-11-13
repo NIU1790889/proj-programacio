@@ -6,8 +6,8 @@
 void MapaSolucio::getPdis(std::vector<PuntDeInteresBase*>& pdis)
 {
 	std::vector<PuntDeInteresBase*> vpdi;
-	vpdi.push_back(new PuntDeInteresBotigaSolucio( "regional", true, "El Millor Restaurant", {41.4902204, 2.1406477}));
-	vpdi.push_back(new PuntDeInteresRestaurantSolucio("bakery", "", false, "La Millor Pastisseria", {41.4918606, 2.1465411}));
+	vpdi.push_back(new PuntDeInteresRestaurantSolucio( "regional", true, "El Millor Restaurant", {41.4902204, 2.1406477}));
+	vpdi.push_back(new PuntDeInteresBotigaSolucio("bakery", "", false, "La Millor Pastisseria", {41.4918606, 2.1465411}));
 	pdis = vpdi;
 	//pdis = m_puntsInteres
 }
@@ -87,9 +87,9 @@ void MapaSolucio::parsejaXmlElements(std::vector<XmlElement>& xmlElements)
 						hours = Util::kvDeTag(it2->second).second;
 				}
 				if(shop)
-					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(category, hous, wheelchair, name, coord)); //add shop
+					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(category, hours, wheelchair, name, coord)); //add shop
 				else if (restaurant)
-					m_puntsInteres.push_back(new PuntDeInteresBotigaSolucio(category, wheelchair, name, coord)); //add restaurant
+					m_puntsInteres.push_back(new PuntDeInteresRestaurantSolucio(category, wheelchair, name, coord)); //add restaurant
 			}
 			else
 			{
